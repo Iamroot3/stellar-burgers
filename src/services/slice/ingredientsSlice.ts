@@ -2,41 +2,36 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getIngredientsApi } from '../../utils/burger-api';
 import { TIngredient } from '../../utils/types';
+import { RootState } from '../store';
 
-interface IngredientsState {
+export type IngredientsState = {
   items: TIngredient[];
-  buns: TIngredient[];
-  mains: TIngredient[];
-  sauces: TIngredient[];
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: IngredientsState = {
   items: [],
-  buns: [],
-  mains: [],
-  sauces: [],
   isLoading: false,
   error: null
 };
 
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchAll',
-  async (_, { rejectWithValue }) => {
-    try {
-      const data = await getIngredientsApi();
-      return data;
-    } catch (error) {
-      return rejectWithValue((error as Error).message);
-    }
-  }
+  async () => getIngredientsApi()
 );
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {},
+  selectors: {
+    getIsLoading: (state) => state.isLoading,
+    getItems: (state: IngredientsState) => state.items,
+    getBuns: (state: IngredientsState) => state.items.filter(item => item.type === 'bun'),
+    getMains: (state: IngredientsState) => state.items.filter(item => item.type === 'main'),
+    getSauces: (state: IngredientsState) => state.items.filter(item => item.type === 'sauce')
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchIngredients.pending, (state) => {
@@ -46,9 +41,7 @@ const ingredientsSlice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
-        state.buns = action.payload.filter((item) => item.type === 'bun');
-        state.mains = action.payload.filter((item) => item.type === 'main');
-        state.sauces = action.payload.filter((item) => item.type === 'sauce');
+        console.log('Loaded ingredients:', action.payload);
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isLoading = false;
@@ -58,3 +51,6 @@ const ingredientsSlice = createSlice({
 });
 
 export default ingredientsSlice.reducer;
+export const getState = (state: RootState): IngredientsState => state.ingredients;
+export const { getIsLoading, getBuns, getMains, getSauces, getItems } = ingredientsSlice.selectors;
+console.log('ingredientsReducer:', getState);
