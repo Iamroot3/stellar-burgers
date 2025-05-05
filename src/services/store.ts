@@ -8,7 +8,7 @@ import {
 } from 'react-redux';
 
 const rootReducer = combineReducers({
-  ingredients: ingredientsReducer,
+  ingredients: ingredientsReducer
 }); // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({

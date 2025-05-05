@@ -3,19 +3,18 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useDispatch, useSelector } from '../../services/store';
+import { useSelector } from '../../services/store';
 import { getState } from '../../services/slice/ingredientsSlice';
-//import { getItems } from '../../services/slice/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
   /** TODO: взять переменные из стора */
-  const { items } = useSelector(getState);
+  const { items, isLoading, error } = useSelector(getState);
   const buns = items.filter((item) => item.type === 'bun');
   const mains = items.filter((item) => item.type === 'main');
   const sauces = items.filter((item) => item.type === 'sauce');
 
-  //if (isLoading) return <div>Загрузка...</div>;
-  if (!buns.length) return <div>Нет данных</div>;
+  //if (isLoading) return <div>Загрузка данных...</div>;
+  //if (!buns.length) return <div>Нет данных</div>;
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);

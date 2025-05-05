@@ -1,3 +1,7 @@
+import { useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/slice/ingredientsSlice';
 import {
   ConstructorPage,
   Feed,
@@ -9,13 +13,18 @@ import {
   ProfileOrders,
   NotFound404
 } from '@pages';
+import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import '../../index.css';
 import styles from './app.module.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 
 const App = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Важно: выносим инициализацию в отдельный эффект
+  useEffect(() => {
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>
@@ -33,7 +42,7 @@ const App = () => {
         <Route
           path='/feed/:number'
           element={
-            <Modal title={'Детали заказа'} onClose={() => navigate('/feed')}>
+            <Modal title='Детали заказа' onClose={() => navigate('/feed')}>
               <OrderInfo />
             </Modal>
           }
@@ -41,7 +50,7 @@ const App = () => {
         <Route
           path='/ingredients/:id'
           element={
-            <Modal title={'Детали ингредиента'} onClose={() => navigate('/')}>
+            <Modal title='Детали ингредиента' onClose={() => navigate('/')}>
               <IngredientDetails />
             </Modal>
           }
@@ -50,7 +59,7 @@ const App = () => {
           path='/profile/orders/:number'
           element={
             <Modal
-              title={'Детали заказа'}
+              title='Детали заказа'
               onClose={() => navigate('/profile/orders')}
             >
               <OrderInfo />
