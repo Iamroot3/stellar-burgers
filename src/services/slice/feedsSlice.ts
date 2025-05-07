@@ -1,7 +1,7 @@
 import { getFeedsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '../../utils/types';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
 export type FeedsState = {
   orders: TOrder[];
@@ -48,5 +48,5 @@ const feedsSlice = createSlice({
 });
 
 export default feedsSlice.reducer;
-export const getFeeds = (state: RootState): IngredientsState =>
+export const getFeeds = (state: RootState): FeedsState =>
   state.feeds;
