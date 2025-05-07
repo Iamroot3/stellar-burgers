@@ -19,10 +19,7 @@ const initialState: FeedsState = {
   error: null
 };
 
-export const fetchFeeds = createAsyncThunk(
-  'feeds/all',
-  getFeedsApi
-);
+export const fetchFeeds = createAsyncThunk('feeds/all', getFeedsApi);
 
 const feedsSlice = createSlice({
   name: 'feeds',
@@ -48,5 +45,4 @@ const feedsSlice = createSlice({
 });
 
 export default feedsSlice.reducer;
-export const getFeeds = (state: RootState): FeedsState =>
-  state.feeds;
+export const getFeeds = (state: RootState): FeedsState => state.feeds;

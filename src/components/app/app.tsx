@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slice/ingredientsSlice';
+import { fetchFeeds } from '../../services/slice/feedsSlice';
 import {
   ConstructorPage,
   Feed,
@@ -21,9 +22,9 @@ const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Важно: выносим инициализацию в отдельный эффект
   useEffect(() => {
     dispatch(fetchIngredients());
+    dispatch(fetchFeeds());
   }, [dispatch]);
 
   return (
