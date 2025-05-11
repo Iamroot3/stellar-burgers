@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/slice/ingredientsSlice';
 import { fetchFeeds } from '../../services/slice/feedsSlice';
@@ -21,6 +21,8 @@ import styles from './app.module.css';
 const App = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const backgroundLocation = location.state?.backgroundLocation;
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -30,7 +32,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/login' element={<Login />} />
@@ -68,6 +70,38 @@ const App = () => {
           }
         />
       </Routes>
+
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title={'Детали заказа'} onClose={() => navigate('/feed')}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Детали ингредиента'} onClose={() => navigate('/')}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal
+                title={'Детали заказа'}
+                onClose={() => navigate('/profile/orders')}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };
