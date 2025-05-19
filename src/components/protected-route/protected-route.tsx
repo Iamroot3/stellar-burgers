@@ -1,9 +1,7 @@
 import React from 'react';
 import { useSelector } from '../../services/store';
 import { Navigate, useLocation } from 'react-router-dom';
-import {
-  getUserAuthStatus
-} from '../../services/slice/userSlice';
+import { getUserAuthStatus } from '../../services/slice/userSlice';
 
 type ProtectedRouteProps = {
   onlyUnAuth?: boolean;
@@ -28,4 +26,3 @@ export const ProtectedRoute = ({
   }
   return children;
 };
-
