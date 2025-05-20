@@ -13,9 +13,6 @@ export const BurgerIngredients: FC = () => {
   const mains = items.filter((item) => item.type === 'main');
   const sauces = items.filter((item) => item.type === 'sauce');
 
-  //if (isLoading) return <div>Загрузка данных...</div>;
-  //if (!buns.length) return <div>Нет данных</div>;
-
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
   const titleMainRef = useRef<HTMLHeadingElement>(null);
