@@ -1,5 +1,5 @@
 import { ProfileUI } from '@ui-pages';
-import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
 import { getUser, updateUserData } from '../../services/slice/userSlice';
 
@@ -8,10 +8,13 @@ export const Profile: FC = () => {
   const dispatch = useDispatch();
   const data = useSelector(getUser);
 
-  const user = {
-    name: data.name,
-    email: data.email
-  };
+  const user = useMemo(
+    () => ({
+      name: data.name,
+      email: data.email
+    }),
+    [data.name, data.email]
+  );
 
   const [formValue, setFormValue] = useState({
     name: user.name,
