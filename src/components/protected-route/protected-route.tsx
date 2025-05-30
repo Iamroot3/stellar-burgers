@@ -16,13 +16,15 @@ export const ProtectedRoute = ({
   const isAuthenticated = useSelector(getUserAuthStatus);
 
   if (!isAuthenticated && !onlyUnAuth) {
-    return <Navigate replace to={'/login'} state={{ from: location }} />;
+    return <Navigate to='/login' replace state={{ from: location }} />;
   }
 
   if (isAuthenticated && onlyUnAuth) {
-    const from = location.state?.from || { pathname: '/' };
-
-    return <Navigate replace to={from} />;
+    const from = location.state?.from?.pathname || '/';
+    if (location.pathname !== from) {
+      return <Navigate to={from} replace />;
+    }
   }
+
   return children;
 };

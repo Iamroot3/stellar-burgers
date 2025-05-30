@@ -5,12 +5,15 @@ import {
   loginUser,
   makeLoginUserSuccess
 } from '../../services/slice/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { setCookie } from '../../utils/cookie';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from =
+    (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,7 +30,7 @@ export const Login: FC = () => {
         }
       })
       .then(() => dispatch(makeLoginUserSuccess(true)))
-      .then(() => navigate('/'));
+      .then(() => navigate(from, { replace: true }));
   };
 
   return (
